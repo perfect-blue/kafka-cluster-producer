@@ -69,10 +69,10 @@ object KafkaBasicProducer {
   }
 
   def twitterSetup(terms: util.List[String],msgQueue:BlockingQueue[String]):Client={
-    val consumerKey: String = "DjBtGDEVWtU29OcMieDUN8L1r"
-    val consumerSecret: String = "tVUGYm5j6PzrsOaMO0kVHHajOxlwwDxiWFPbbTLvkowcwfXQ7P"
-    val token: String = "3321061040-OXVrtcLVilqBQUIMDnvlMs0wh4bO2MWRdthcAA9"
-    val secret: String = "E86TWY1XNoVpecpld15lN6hEXIGQjeTF5FBJdQK36mlhg"
+    val consumerKey: String = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    val consumerSecret: String = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    val token: String = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    val secret: String = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
     val twitterHosts:Hosts = new HttpHosts(Constants.STREAM_HOST)
     val twitterEndpoint = new StatusesFilterEndpoint()
