@@ -11,7 +11,7 @@ import scala.collection.JavaConversions._
 
 object StockProducer {
 
-  val apiKey="1SHTFYVF560BRSCQ"
+  val apiKey=""
 
 
   //Time Series Daily
