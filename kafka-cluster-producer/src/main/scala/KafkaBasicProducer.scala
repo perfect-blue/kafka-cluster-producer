@@ -72,59 +72,6 @@ object KafkaBasicProducer {
 
   }
 
-  def twitterSetup(terms: util.List[String],msgQueue:BlockingQueue[String]):Client={
-    val consumerKey: String = "DjBtGDEVWtU29OcMieDUN8L1r"
-    val consumerSecret: String = "tVUGYm5j6PzrsOaMO0kVHHajOxlwwDxiWFPbbTLvkowcwfXQ7P"
-    val token: String = "3321061040-OXVrtcLVilqBQUIMDnvlMs0wh4bO2MWRdthcAA9"
-    val secret: String = "E86TWY1XNoVpecpld15lN6hEXIGQjeTF5FBJdQK36mlhg"
 
-    val twitterHosts:Hosts = new HttpHosts(Constants.STREAM_HOST)
-    val twitterEndpoint = new StatusesFilterEndpoint()
-    // Optional: set up some followings and track terms
-
-    val followings= Lists.newArrayList(1234L,566788L)
-
-    twitterEndpoint.followings(followings.asScala.map(long2Long).asJava)
-    twitterEndpoint.trackTerms(terms)
-
-    val twitterAuth:Authentication = new OAuth1(consumerKey,consumerSecret,token,secret)
-
-    val builder: ClientBuilder = new ClientBuilder()
-      .name("twitter-client-01")
-      .hosts(twitterHosts)
-      .authentication(twitterAuth)
-      .endpoint(twitterEndpoint)
-      .processor(new StringDelimitedProcessor(msgQueue))
-
-    val twitterClient : Client = builder.build()
-
-    twitterClient
-  }
-
-  def writeFromTwitter(property:Properties,topic:String):Unit={
-    val msgQueue = new LinkedBlockingQueue[String](100000)
-    val terms: util.List[String] = Lists.newArrayList("trump","america")
-
-    //create twitter client
-    val client: Client = twitterSetup(terms,msgQueue)
-    client.connect()
-
-    //create producer
-    val producer = new KafkaProducer[String,String](property)
-
-    while(!client.isDone){
-      var msg:String = null
-      try msg = msgQueue.poll(5, TimeUnit.SECONDS)
-      catch {
-        case e: InterruptedException =>
-          e.printStackTrace()
-          client.stop()
-      }
-
-      if(msg!=null){
-        producer.send(new ProducerRecord[String,String](topic,msg))
-      }
-    }
-  }
 
 }
