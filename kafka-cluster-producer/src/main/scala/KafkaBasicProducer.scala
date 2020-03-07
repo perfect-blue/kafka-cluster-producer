@@ -4,15 +4,15 @@ import java.util.{List, Properties}
 
 import com.google.common.collect.Lists
 import org.apache.kafka.clients.producer._
-
 import com.twitter.hbc.ClientBuilder
 import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint
 import com.twitter.hbc.core.processor.StringDelimitedProcessor
 import com.twitter.hbc.core.{Client, Constants, Hosts, HttpHosts}
 import com.twitter.hbc.httpclient.auth.{Authentication, OAuth1}
 
+import ForsquareProducer._
 import scala.collection.JavaConverters._
-
+import StockProducer._
 object KafkaBasicProducer {
 
 
@@ -40,7 +40,11 @@ object KafkaBasicProducer {
 
     //writeToKafka(props,"scala-first-topic")
 
-    writeFromTwitter(props,"scala-twitter")
+    //writeFromTwitter(props,"scala-twitter")
+    //writeFrromFacebook(props,"facebook-topics")
+
+    //writeTimeSeriesDaily(props,"time_series")
+    writeFromForSquare()
 
   }
 
@@ -69,10 +73,10 @@ object KafkaBasicProducer {
   }
 
   def twitterSetup(terms: util.List[String],msgQueue:BlockingQueue[String]):Client={
-    val consumerKey: String = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    val consumerSecret: String = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    val token: String = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    val secret: String = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    val consumerKey: String = "DjBtGDEVWtU29OcMieDUN8L1r"
+    val consumerSecret: String = "tVUGYm5j6PzrsOaMO0kVHHajOxlwwDxiWFPbbTLvkowcwfXQ7P"
+    val token: String = "3321061040-OXVrtcLVilqBQUIMDnvlMs0wh4bO2MWRdthcAA9"
+    val secret: String = "E86TWY1XNoVpecpld15lN6hEXIGQjeTF5FBJdQK36mlhg"
 
     val twitterHosts:Hosts = new HttpHosts(Constants.STREAM_HOST)
     val twitterEndpoint = new StatusesFilterEndpoint()
@@ -99,7 +103,7 @@ object KafkaBasicProducer {
 
   def writeFromTwitter(property:Properties,topic:String):Unit={
     val msgQueue = new LinkedBlockingQueue[String](100000)
-    val terms: util.List[String] = Lists.newArrayList("oscars")
+    val terms: util.List[String] = Lists.newArrayList("trump","america")
 
     //create twitter client
     val client: Client = twitterSetup(terms,msgQueue)
@@ -122,4 +126,5 @@ object KafkaBasicProducer {
       }
     }
   }
+
 }
